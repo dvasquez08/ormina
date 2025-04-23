@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:ormina/screens/summary_detail_screen.dart';
 
 class UploadScreen extends StatefulWidget {
   const UploadScreen({super.key});
@@ -23,6 +24,17 @@ class _UploadScreenState extends State<UploadScreen> {
         _file = result.files.first;
         _fileName = _file!.name;
       });
+
+      final generatedSummary =
+          "Here's a summary of your meeting. Key points:\n~ Discussed project timeline\n~ Agreed on milestones\n- Assigned tasks";
+
+      if (context.mounted) {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (_) =>
+                    SummaryDetailScreen(summary: generatedSummary)));
+      }
     }
   }
 
