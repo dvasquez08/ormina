@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:ormina/screens/summary_detail_screen.dart';
+import 'package:ormina/screens/upload_screen.dart';
 import 'screens/login_screen.dart';
 import 'firebase_options.dart';
 
@@ -17,10 +19,13 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Ormina',
-      theme: ThemeData(primarySwatch: Colors.deepPurple),
-      home: const LoginScreen(),
-      debugShowCheckedModeBanner: false,
-    );
+        title: 'Ormina',
+        theme: ThemeData(primarySwatch: Colors.deepPurple),
+        debugShowCheckedModeBanner: false,
+        routes: {
+          '/': (context) => const LoginScreen(),
+          '/upload': (context) => const UploadScreen(),
+          '/summary': (context) => const SummaryDetailScreen(summary: '')
+        });
   }
 }

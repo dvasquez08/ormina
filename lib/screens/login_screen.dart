@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import '../services/auth_service.dart';
-import 'upload_screen.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
@@ -9,10 +7,7 @@ class LoginScreen extends StatelessWidget {
   void _handleSignIn(BuildContext context) async {
     final user = await AuthService.signInWithGoogle();
     if (user != null && context.mounted) {
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (_) => const UploadScreen()),
-      );
+      Navigator.pushReplacementNamed(context, '/upload');
     }
   }
 

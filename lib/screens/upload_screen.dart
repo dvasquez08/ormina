@@ -25,16 +25,15 @@ class _UploadScreenState extends State<UploadScreen> {
         _fileName = _file!.name;
       });
 
-      final generatedSummary =
+      const generatedSummary =
           "Here's a summary of your meeting. Key points:\n~ Discussed project timeline\n~ Agreed on milestones\n- Assigned tasks";
 
-      if (context.mounted) {
-        Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (_) =>
-                    SummaryDetailScreen(summary: generatedSummary)));
-      }
+      if (!mounted) return;
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (_) =>
+                  const SummaryDetailScreen(summary: generatedSummary)));
     }
   }
 
