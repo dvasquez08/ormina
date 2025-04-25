@@ -40,6 +40,8 @@ dependencies:
   firebase_storage: ^12.4.5
   file_picker: ^10.1.2
   google_sign_in: ^6.2.2
+  hooks_riverpod: ^2.6.1
+  flutter_hooks: ^0.21.2
 
 dev_dependencies:
   flutter_test:

@@ -1,23 +1,18 @@
 import 'package:flutter/material.dart';
-import '../services/auth_service.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import '../providers/auth_provider.dart';
 
-class LoginScreen extends StatelessWidget {
+class LoginScreen extends ConsumerWidget {
   const LoginScreen({super.key});
 
-  void _handleSignIn(BuildContext context) async {
-    final user = await AuthService.signInWithGoogle();
-    if (user != null && context.mounted) {
-      Navigator.pushReplacementNamed(context, '/upload');
-    }
-  }
-
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final authState = ref.watch(authStateProvider);
+
     return Scaffold(
-      backgroundColor: Colors.white,
       body: Center(
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 32),
+          padding: const EdgeInsets.all(32),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
@@ -26,14 +21,33 @@ class LoginScreen extends StatelessWidget {
                 style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 40),
-              ElevatedButton.icon(
-                onPressed: () => _handleSignIn(context),
-                icon: const Icon(Icons.login),
-                label: const Text('Sign in with Google'),
-                style: ElevatedButton.styleFrom(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
-                  textStyle: const TextStyle(fontSize: 16),
+              authState.when(
+                data: (user) {
+                  if (user != null) {
+                    Future.microtask(() {
+                      Navigator.pushReplacementNamed(context, '/upload');
+                    });
+                  }
+                  return ElevatedButton.icon(
+                    onPressed: () =>
+                        ref.read(authStateProvider.notifier).signInWithGoogle(),
+                    icon: const Icon(Icons.login),
+                    label: const Text('Sign in with Google'),
+                  );
+                },
+                loading: () => const CircularProgressIndicator(),
+                error: (e, _) => Column(
+                  children: [
+                    Text('Error: $e',
+                        style: const TextStyle(color: Colors.red)),
+                    ElevatedButton.icon(
+                      onPressed: () => ref
+                          .read(authStateProvider.notifier)
+                          .signInWithGoogle(),
+                      icon: const Icon(Icons.login),
+                      label: const Text('Try Again'),
+                    ),
+                  ],
                 ),
               ),
             ],
